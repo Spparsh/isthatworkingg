@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITWASWORKING...?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #140d0a;
+    --bg-deep: #0d0806;
+    --surface: #1e1410;
+    --surface-2: #241812;
+    --border: rgba(255, 150, 80, 0.16);
+    --border-strong: rgba(255, 150, 80, 0.35);
+    --text: #f6ece2;
+    --text-dim: #a89684;
+    --ember: #ff6a2b;
+    --ember-deep: #d94f14;
+    --amber: #ffb254;
+    --danger: #e5484d;
+    --ok: #4cb782;
+    --font-display: "Bricolage Grotesque", "Segoe UI", sans-serif;
+    --font-mono: "Fragment Mono", "Courier New", monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #faf4ec;
+      --bg-deep: #f2e9de;
+      --surface: #ffffff;
+      --surface-2: #fbf5ec;
+      --border: rgba(120, 60, 20, 0.18);
+      --border-strong: rgba(120, 60, 20, 0.4);
+      --text: #2a1a10;
+      --text-dim: #8a715c;
+      --ember: #d94f14;
+      --ember-deep: #b83c0c;
+      --amber: #b06a10;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-display);
+    background: var(--bg);
+    background-image: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(255, 106, 43, 0.10), transparent 65%);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.55;
+  }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+
+  /* ---------- header ---------- */
+  header { text-align: center; margin-bottom: 36px; }
+
+  .wordmark {
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+  .wordmark .flame { color: var(--ember); }
+
+  .tagline {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  .keywarn {
+    display: none;
+    max-width: 520px;
+    margin: 18px auto 0;
+    padding: 12px 16px;
+    border: 1px solid var(--danger);
+    border-radius: 10px;
+    background: rgba(229, 72, 77, 0.08);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text);
+    text-align: left;
+  }
+
+  /* ---------- code input ---------- */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  }
+
+  .panel-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+  }
+  .dot { color: var(--ember); }
+
+  textarea {
+    width: 100%;
+    min-height: 240px;
+    resize: vertical;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  textarea:focus { border-color: var(--border-strong); }
+  textarea::placeholder { color: var(--text-dim); opacity: 0.55; }
+
+  /* ---------- controls ---------- */
+  .controls {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  @media (max-width: 640px) { .controls { grid-template-columns: 1fr; } }
+
+  .control { display: flex; flex-direction: column; gap: 6px; }
+  .control label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+  }
+  .control label b { color: var(--amber); font-weight: 400; }
+
+  select, .pace-row input[type="range"] {
+    width: 100%;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+  }
+  select:focus { border-color: var(--border-strong); }
+
+  .pace-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+  .pace-row input[type="range"] {
+    border: none; background: none; padding: 0;
+    accent-color: var(--ember);
+  }
+
+  /* intensity slider */
+  .intensity {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .intensity input[type="range"] {
+    width: 100%;
+    accent-color: var(--ember);
+    cursor: pointer;
+  }
+  .intensity-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-dim);
+  }
+  .intensity-now { color: var(--amber); }
+
+  /* ---------- the button ---------- */
+  .roast-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 18px;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: #fff8f2;
+    background: var(--ember-deep);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .roast-btn:hover:not(:disabled) { background: var(--ember); }
+  .roast-btn:active:not(:disabled) { transform: scale(0.985); }
+  .roast-btn:disabled { opacity: 0.6; cursor: wait; }
+
+  .flame-svg { width: 22px; height: 22px; flex-shrink: 0; }
+  .roast-btn:hover:not(:disabled) .flame-svg { animation: flicker 0.45s ease-in-out infinite alternate; }
+  @keyframes flicker { from { transform: scale(1) rotate(-2deg); } to { transform: scale(1.12) rotate(3deg); } }
+
+  .status {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin-top: 12px;
+    min-height: 1.2em;
+  }
+
+  /* ---------- verdict ---------- */
+  #result { display: none; margin-top: 40px; }
+
+  .verdict-card {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 22px 26px;
+    background: linear-gradient(135deg, rgba(255, 106, 43, 0.14), rgba(255, 106, 43, 0.04));
+    border: 1px solid var(--border-strong);
+    border-radius: 16px;
+    margin-bottom: 20px;
+  }
+  .verdict-score {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--ember);
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .verdict-note {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+  .verdict-note .big { font-size: 0.95rem; color: var(--text); display: block; margin-bottom: 2px; }
+
+  .roast-body {
+    font-size: 1.15rem;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    padding: 24px 26px;
+  }
+  .roast-written { padding: 20px 24px; }
+  .written-text {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+
+  /* ---------- audio ---------- */
+  .audio-card {
+    margin-top: 20px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .audio-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+  }
+  .speaking-ind {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 14px;
+    visibility: hidden;
+  }
+  .speaking-ind.on { visibility: visible; }
+  .speaking-ind span {
+    width: 3px;
+    background: var(--ember);
+    border-radius: 2px;
+    animation: bounce 0.7s ease-in-out infinite;
+  }
+  .speaking-ind span:nth-child(1) { height: 6px; animation-delay: 0s; }
+  .speaking-ind span:nth-child(2) { height: 11px; animation-delay: 0.15s; }
+  .speaking-ind span:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+  .speaking-ind span:nth-child(4) { height: 13px; animation-delay: 0.45s; }
+  .speaking-ind span:nth-child(5) { height: 7px; animation-delay: 0.6s; }
+  @keyframes bounce { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1); } }
+
+  audio { width: 100%; }
+  .audio-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .ghost-btn {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .ghost-btn:hover { color: var(--text); border-color: var(--border-strong); }
+
+  footer {
+    margin-top: 56px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1 class="wordmark">ITWASWORKING...?</h1>
+    <p class="tagline">your code walks in. it does not walk out the same. now with a voice.</p>
+    <div class="keywarn" id="keywarn"></div>
+  </header>
+
+  <section class="panel">
+    <div class="panel-label">
+      <span><span class="dot">●</span> the evidence &mdash; paste your code below</span>
+      <span id="charcount">0 chars</span>
+    </div>
+    <textarea id="codebox" spellcheck="false" placeholder="// paste the code that hurt people here
+def process_data(data, temp, temp2):
+    try:
+        result = []
+        for i in range(len(data)):
+            for j in range(len(data)):
+                if data[i] == data[j] and i != j:
+                    result.append(data[i])
+        return result
+    except:
+        pass  # TODO: fix later
+"></textarea>
+
+    <div class="controls">
+      <div class="intensity">
+        <label>intensity <b id="intensity-now">3 &mdash; savage senior dev</b></label>
+        <input type="range" id="intensity" min="1" max="5" step="1" value="3">
+        <div class="intensity-labels"><span>1 toasted</span><span>2 singed</span><span>3 savage</span><span>4 brutal</span><span>5 nuclear</span></div>
+      </div>
+      <div class="control">
+        <label>roast language</label>
+        <select id="language">
+          <option value="en-IN">English</option>
+          <option value="hi-IN">Hindi विनाशा</option>
+        </select>
+      </div>
+      <div class="control">
+        <label>roasting voice</label>
+        <select id="speaker"></select>
+      </div>
+      <div class="control">
+        <label>rant speed <b id="pace-now">1.0&times;</b></label>
+        <div class="pace-row">
+          <input type="range" id="pace" min="0.7" max="1.6" step="0.05" value="1.0">
+        </div>
+      </div>
+    </div>
+
+    <button class="roast-btn" id="roastBtn">
+      <svg class="flame-svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M13.5 0.7c.6 3.9-1.6 5.6-3.3 7.4C8.5 9.9 7 11.7 7 14.5 7 19 10.6 22 14.3 22c-1.2-1-1.8-2.2-1.8-3.6 0-2.5 2.1-3.5 3.6-5.4.5 1 .3 1.9-.2 2.8 1.5-.8 2.6-2.3 2.6-4.4 0-4.4-3.4-7.4-5-10.7zM6.6 14.2C5.8 15.4 5.4 16.8 5.4 18c0 .8.1 1.5.3 2.2C4.1 18.8 3.4 16.6 3.4 14.7c0-1.6.5-3.2 1.5-4.9.4 1.6 1.1 2.1 1.7 4.4z"/>
+      </svg>
+      <span id="btnText">ROAST ME</span>
+    </button>
+    <div class="status" id="status"></div>
+  </section>
+
+  <section id="result">
+    <div class="verdict-card">
+      <div class="verdict-score" id="verdictScore">?/10</div>
+      <div class="verdict-note">
+        <span class="big" id="verdictLine">pain rating</span>
+        <span id="verdictSub">how much this code hurt the reviewer</span>
+      </div>
+    </div>
+    <div class="panel-label" style="margin:0 0 10px 4px"><span class="dot">●</span> it speaks &mdash; live voice roast</div>
+    <div class="panel roast-body" id="roastBody"></div>
+    <div class="panel-label" style="margin:22px 0 10px 4px; display:none" id="writtenLabel"><span class="dot">●</span> and the receipts &mdash; full written roast</div>
+    <div class="panel roast-written" id="roastWrittenWrap" style="display:none">
+      <div id="roastWritten" class="written-text"></div>
+    </div>
+    <div class="panel audio-card">
+      <div class="audio-head">
+        <span>the voice of judgment &mdash; bulbul v3</span>
+        <span class="speaking-ind" id="speakingInd"><span></span><span></span><span></span><span></span><span></span></span>
+      </div>
+      <audio id="player" controls preload="auto"></audio>
+      <div class="audio-actions">
+        <button class="ghost-btn" id="replayBtn">replay the pain</button>
+        <a class="ghost-btn" id="downloadBtn" download="roast.wav">download the roast</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>we roast because we love. (we dont). &middot; project by Spparsh ;)</footer>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const box = $("codebox"), btn = $("roastBtn"), btnText = $("btnText"), statusEl = $("status");
+const player = $("player"), speakingInd = $("speakingInd");
+let busy = false;
+
+// replay via the <audio> element also drives the speaking indicator
+player.addEventListener("play", () => speakingInd.classList.add("on"));
+player.addEventListener("pause", () => speakingInd.classList.remove("on"));
+player.addEventListener("ended", () => speakingInd.classList.remove("on"));
+
+const INTENSITY_TEXT = {
+  1: "1 — disappointed parent",
+  2: "2 — friendly jab",
+  3: "3 — savage senior dev",
+  4: "4 — open mic massacre",
+  5: "5 — NUCLEAR",
+};
+
+const VERDICT_LINES = {
+  low:  ["mild discomfort", "the code survived with dignity"],
+  mid:  ["moderate pain", "a therapist was consulted"],
+  high: ["irreversible damage", "the reviewer has seen things"],
+};
+
+// ------- config + speakers -------
+async function init() {
+  try {
+    const res = await fetch("/api/config");
+    const cfg = await res.json();
+    if (!cfg.has_key) {
+      const w = $("keywarn");
+      w.style.display = "block";
+      w.textContent = "!! No SARVAM_API_KEY set on the server. export SARVAM_API_KEY=\"...\" and restart server.py";
+    }
+    const sel = $("speaker");
+    for (const s of cfg.speakers) {
+      const opt = document.createElement("option");
+      opt.value = s;
+      opt.textContent = s;
+      sel.appendChild(opt);
+    }
+  } catch {
+    // fetch failed -> the page was opened directly (file://) instead of through server.py
+    const w = $("keywarn");
+    w.style.display = "block";
+    w.innerHTML = "!! This page was opened without the server. Close it, then in a terminal run: "
+      + "<b>python server.py</b> and open <b>http://localhost:8666</b> instead. "
+      + "(If server.py is already running, check it started without errors.)";
+  }
+}
+init();
+
+// ------- live labels -------
+box.addEventListener("input", () => {
+  $("charcount").textContent = `${box.value.length.toLocaleString()} chars`;
+});
+$("intensity").addEventListener("input", (e) => {
+  $("intensity-now").textContent = INTENSITY_TEXT[e.target.value];
+});
+$("pace").addEventListener("input", (e) => {
+  $("pace-now").textContent = `${Number(e.target.value).toFixed(2).replace(/0$/, "")}\u00d7`;
+});
+
+// ------- roast flow (streaming: the voice roasts live, sentence by sentence) -------
+let audioCtx = null, nextStart = 0, spokenFull = "", fullAudioURL = null;
+player.style.display = "none";
+
+function resetResult() {
+  $("result").style.display = "none";
+  $("roastBody").textContent = "";
+  $("roastWritten").textContent = "";
+  $("roastWrittenWrap").style.display = "none";
+  $("writtenLabel").style.display = "none";
+  document.querySelector(".audio-card").style.display = "none";
+  player.style.display = "none";
+  player.removeAttribute("src");
+  if (fullAudioURL) { URL.revokeObjectURL(fullAudioURL); fullAudioURL = null; }
+  $("verdictScore").textContent = "?/10";
+  $("verdictLine").textContent = "pain rating";
+  $("verdictSub").textContent = "how much this code hurt the reviewer";
+}
+
+btn.addEventListener("click", async () => {
+  if (busy) return;
+  const code = box.value.trim();
+  if (!code) { setStatus("you pasted nothing. bold of you to show up with empty hands."); return; }
+
+  busy = true;
+  btn.disabled = true;
+  resetResult();
+  spokenFull = "";
+  nextStart = 0;
+  btnText.textContent = "ROASTING\u2026";
+  setStatus("summoning the demon\u2026");
+  // audio context must be created inside the click gesture or the browser stays silent
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  audioCtx.resume().catch(() => {});
+
+  try {
+    setStatus("reading your code. forming opinions\u2026");
+    const res = await fetch("/api/roast-voice", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        code,
+        level: Number($("intensity").value),
+        language: $("language").value,
+        speaker: $("speaker").value || "shubh",
+        pace: Number($("pace").value),
+      }),
+    });
+    if (!res.ok || !res.body) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || "the roast backfired");
+    }
+
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    let buf = "";
+    let streamed = false;
+    while (true) {
+      const { done: d, value } = await reader.read();
+      if (d) break;
+      buf += dec.decode(value, { stream: true });
+      let nl;
+      while ((nl = buf.indexOf("\n")) >= 0) {
+        const line = buf.slice(0, nl).trim();
+        buf = buf.slice(nl + 1);
+        if (!line) continue;
+        let ev;
+        try { ev = JSON.parse(line); } catch { continue; }
+
+        if (ev.type === "text") {
+          if (!streamed) {
+            streamed = true;
+            $("result").style.display = "block";
+            document.querySelector(".audio-card").style.display = "flex";
+            setStatus("the roast has entered the room. listen\u2026");
+          }
+          $("roastBody").textContent += ev.data;
+          spokenFull += ev.data;
+          $("result").scrollIntoView({ behavior: "smooth", block: "start" });
+        } else if (ev.type === "roast") {
+          $("writtenLabel").style.display = "block";
+          $("roastWrittenWrap").style.display = "block";
+          $("roastWritten").textContent += ev.data;
+        } else if (ev.type === "audio") {
+          await queueAudio(ev.b64);
+        } else if (ev.type === "verdict") {
+          showVerdict(ev.value);
+        } else if (ev.type === "error") {
+          throw new Error(ev.message);
+        } else if (ev.type === "done") {
+          player.style.display = "block";
+          setStatus("roast complete. you may never code again.");
+        }
+      }
+    }
+  } catch (err) {
+    setStatus(err.message || "something caught fire. not the good kind.");
+  } finally {
+    busy = false;
+    btn.disabled = false;
+    btnText.textContent = "ROAST ME";
+  }
+});
+
+async function queueAudio(b64) {
+  try {
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const audio = await audioCtx.decodeAudioData(bytes.buffer);
+    const src = audioCtx.createBufferSource();
+    src.buffer = audio;
+    src.connect(audioCtx.destination);
+    const t = Math.max(audioCtx.currentTime + 0.05, nextStart);
+    src.start(t);
+    nextStart = t + audio.duration;
+    speakingInd.classList.add("on");
+    src.onended = () => {
+      if (audioCtx.currentTime >= nextStart - 0.15) speakingInd.classList.remove("on");
+    };
+  } catch { /* one bad chunk shall not stop the show */ }
+}
+
+function showVerdict(verdict) {
+  $("verdictScore").textContent = verdict;
+  const n = parseFloat(verdict) || 0;
+  const tier = n <= 3 ? VERDICT_LINES.low : n <= 6 ? VERDICT_LINES.mid : VERDICT_LINES.high;
+  $("verdictLine").textContent = tier[0];
+  $("verdictSub").textContent = tier[1];
+}
+
+function setStatus(msg) { statusEl.textContent = msg; }
+
+// ------- replay / download: rebuild the full roast as one audio file, on demand -------
+async function getFullAudio() {
+  if (fullAudioURL) return fullAudioURL;
+  const text = spokenFull || $("roastBody").textContent;
+  if (!text.trim()) throw new Error("nothing to replay yet");
+  const res = await fetch("/api/speak", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      text,
+      speaker: $("speaker").value || "shubh",
+      language: $("language").value,
+      pace: Number($("pace").value),
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "the voice choked");
+  }
+  const blob = await res.blob();
+  fullAudioURL = URL.createObjectURL(blob);
+  return fullAudioURL;
+}
+
+$("replayBtn").addEventListener("click", async () => {
+  try {
+    setStatus("re-staging the humiliation\u2026");
+    player.src = await getFullAudio();
+    player.style.display = "block";
+    await player.play();
+    setStatus("roast complete. you may never code again.");
+  } catch (err) { setStatus(err.message); }
+});
+
+$("downloadBtn").addEventListener("click", async (e) => {
+  e.preventDefault();
+  try {
+    const u = await getFullAudio();
+    const a = document.createElement("a");
+    a.href = u;
+    a.download = "roast.wav";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  } catch (err) { setStatus(err.message); }
+});
+</script>
+</body>
+</html>
