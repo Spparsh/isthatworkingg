@@ -1,7 +1,7 @@
-=====================================================
+
 ISTHATWORKINGG?  --  your code walks in. it does not
 walk out the same.  now with a live voice.
-=====================================================
+
 
 WHAT'S INSIDE
   server.py    tiny local server: serves the UI and
@@ -22,6 +22,6 @@ USE
   - pick language (English or Hindi), voice, rant speed
   - hit ROAST ME
 
-=====================================================
+
 we roast because we love. mostly.
-=====================================================
+
